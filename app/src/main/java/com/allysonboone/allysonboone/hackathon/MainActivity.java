@@ -10,11 +10,16 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
+    public ArrayList<String> clubs = new ArrayList<String>();
+    public ArrayList<String> likedClubs = new ArrayList<String>();
+    public int pos = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         //setSupportActionBar(toolbar);
+        createArray(clubs);
     }
 
     @Override
@@ -46,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
-    private ArrayList<String> clubs = new ArrayList<>();
+
     public void createArray(ArrayList<String> clubs){
         clubs.add("HES");
         clubs.add("GES");
@@ -56,22 +62,32 @@ public class MainActivity extends AppCompatActivity {
      * This method is called when the next button is clicked.
      */
     public void changeClub(View view) {
-        createArray(clubs);
-        int pos = 0;
-        if(pos<clubs.size()){
-            display(pos);
-            pos++;
-        }
-        else{
+        display(pos);
+        pos++;
+        if(pos == clubs.size()){
             pos = 0;
-            display(pos);
         }
+    }
+
+    public void setLikedClubs(View view){
+        TextView quantityTextView = (TextView) findViewById(R.id.clubName);
+        likedClubs.add(quantityTextView.toString());
     }
     /**
      * This method displays the given quantity value on the screen.
      */
     private void display(int pos) {
+        String clubName = "";
         TextView quantityTextView = (TextView) findViewById(R.id.clubName);
         quantityTextView.setText(clubs.get(pos));
+        ImageView clubImageView = (ImageView) findViewById(R.id.schedule);
+        if(pos == 0) {
+            clubImageView.setImageResource(R.drawable.he);
+        }else if(pos == 1){
+            clubImageView.setImageResource(R.drawable.ge);
+        }
+        else if(pos == 2) {
+            clubImageView.setImageResource(R.drawable.ac);
+        }
     }
 }
